@@ -7,6 +7,7 @@ Room : <%= @room.title %><br />
   <tr>
     <th>User</th>
     <th>Sentence</th>
+    <th>Created at</th>
     <th></th>
   </tr>
 
@@ -14,7 +15,8 @@ Room : <%= @room.title %><br />
   <tr>
     <td><%= render partial: '/layouts/user_icon', locals: { user: message.user } %></td>
     <td><%= raw show_markdown( message.sentence ) %></td>
-    <td><%= link_to t( "menu.destroy" ), room_message_path( @room, message ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %></td>
+    <td><%= message.created_at.strftime("%Y/%m/%d %H:%M:%S") %></td>
+    <td><% if message.user_id == current_user.id %><%= link_to t( "menu.destroy" ), room_message_path( @room, message ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %><% end %></td>
   </tr>
 <% } %>
 </table>
