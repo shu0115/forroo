@@ -1,5 +1,7 @@
 Forroo::Application.routes.draw do
-  resources :rooms
+  resources :rooms do
+    resources :messages, only: [ :index, :create, :destroy ]
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,0 +1,39 @@
+
+<h1>Messages</h1>
+
+Room : <%= @room.title %><br />
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Sentence</th>
+    <th></th>
+  </tr>
+
+<% @messages.each{ |message| %>
+  <tr>
+    <td><%= render partial: '/layouts/user_icon', locals: { user: message.user } %></td>
+    <td><%= raw show_markdown( message.sentence ) %></td>
+    <td><%= link_to t( "menu.destroy" ), room_message_path( @room, message ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %></td>
+  </tr>
+<% } %>
+</table>
+
+<br />
+
+<%= form_for( :message, url: room_messages_path ) do |f| %>
+  <div class="field">
+    <%= f.text_area :sentence, wrap: "off", class: "span8", rows: 5 %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit t( "menu.create" ), data: { 'disable-with' => t( "menu.create" ) } %>
+  </div>
+<% end %>
+
+<%#= link_to t( "menu.new" ), new_room_path %>
+
+<br />
+<br />
+
+<%= link_to "Rooms", rooms_path %>

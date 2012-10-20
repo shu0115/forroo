@@ -59,8 +59,8 @@ class RoomsController < ApplicationController
   # destroy #
   #---------#
   def destroy( id )
-    @room = Room.where( id: id, user_id: session[:user_id] ).first
-    @room.destroy
+    room = Room.where( id: id, user_id: session[:user_id] ).first
+    room.destroy
 
     redirect_to rooms_path
   end

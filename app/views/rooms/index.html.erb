@@ -9,6 +9,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @rooms.each{ |room| %>
@@ -16,6 +17,7 @@
     <td><%= room.user_id %></td>
     <td><%= room.title %></td>
     <td><%= room.permission %></td>
+    <td><%= link_to "チャット", room_messages_path( room ) %></td>
     <td><%= link_to t( "menu.show" ), room_path( room ) %></td>
     <td><%= link_to t( "menu.edit" ), edit_room_path( room ) %></td>
     <td><%= link_to t( "menu.destroy" ), room_path( room ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %></td>
