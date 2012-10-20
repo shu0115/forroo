@@ -30,6 +30,7 @@ class MessagesController < ApplicationController
     if @message.save
       # Pusherトリガー
       Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: room_id } )
+
       redirect_to( room_messages_path( room_id ) )
     else
       @room = Room.where( id: room_id ).first
@@ -45,6 +46,9 @@ class MessagesController < ApplicationController
   def destroy( room_id, id )
     message = Message.where( room_id: room_id, id: id, user_id: session[:user_id] ).first
     message.present? ? message.destroy : flash[:alert] = "メッセージの削除に失敗しました。"
+
+    # Pusherトリガー
+    Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: room_id } )
 
     redirect_to( room_messages_path( room_id ) )
   end
