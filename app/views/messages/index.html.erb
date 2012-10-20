@@ -10,6 +10,7 @@
       null,
       // コールバック
       function(data, status) {
+        console.log( "[ status ] : " + status );
         $('#messages_target_room_<%= @room.id %>').html(data);
       },
       // 応答データ形式
