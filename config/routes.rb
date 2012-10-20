@@ -1,6 +1,8 @@
 Forroo::Application.routes.draw do
   resources :rooms do
-    resources :messages, only: [ :index, :create, :destroy ]
+    resources :messages, only: [ :index, :create, :destroy ] do
+      get 'list', :on => :collection
+    end
   end
 
   # The priority is based upon order of creation:

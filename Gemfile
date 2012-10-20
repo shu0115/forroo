@@ -67,6 +67,9 @@ gem "rubypython", "0.5.1"  # For Heroku
 # For Routing
 gem 'sextant', :group => :development
 
+# For Pusher
+gem 'pusher'
+
 # Utility
 gem 'kaminari'
 gem 'action_args'

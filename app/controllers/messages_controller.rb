@@ -9,6 +9,16 @@ class MessagesController < ApplicationController
     @message = Message.new
   end
 
+  #------#
+  # list #
+  #------#
+  def list( room_id )
+    room     = Room.where( id: room_id ).first
+    messages = Message.where( room_id: room_id ).all
+
+    render partial: 'messages', locals: { room: room, messages: messages }
+  end
+
   #--------#
   # create #
   #--------#
@@ -18,6 +28,8 @@ class MessagesController < ApplicationController
     @message.room_id = room_id
 
     if @message.save
+      # Pusherトリガー
+      Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: room_id } )
       redirect_to( room_messages_path( room_id ) )
     else
       @room = Room.where( id: room_id ).first

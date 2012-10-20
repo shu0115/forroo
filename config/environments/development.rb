@@ -38,4 +38,11 @@ Forroo::Application.configure do
 
   # For LogRotate
   config.logger = Logger.new( 'log/development.log', 5, 1*1024*1024 )  # 1MB * 5
+
+  # For Pusher
+  require 'pusher'
+
+  Pusher.app_id = '30010'
+  Pusher.key    = '1956a1dc5e709d03b4d8'
+  Pusher.secret = 'c6d25814a98037502b33'
 end

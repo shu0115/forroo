@@ -1,25 +1,31 @@
+<script type="text/javascript">
+  var pusher = new Pusher('<%= Pusher.key %>'); // uses your API KEY
+  var channel = pusher.subscribe('channel_room_<%= @room.id %>');
+
+  channel.bind( 'message_event_room_<%= @room.id %>', function(data){
+    $.get(
+      // 送信先
+      "/rooms/<%= @room.id %>/messages/list",
+      // 送信データ
+      null,
+      // コールバック
+      function(data, status) {
+        $('#messages_target_room_<%= @room.id %>').html(data);
+      },
+      // 応答データ形式
+      "html"
+    );
+  } );
+</script>
 
 <h1>Messages</h1>
 
 Room : <%= @room.title %><br />
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Sentence</th>
-    <th>Created at</th>
-    <th></th>
-  </tr>
-
-<% @messages.each{ |message| %>
-  <tr>
-    <td><%= render partial: '/layouts/user_icon', locals: { user: message.user } %></td>
-    <td><%= raw show_markdown( message.sentence ) %></td>
-    <td><%= message.created_at.strftime("%Y/%m/%d %H:%M:%S") %></td>
-    <td><% if message.user_id == current_user.id %><%= link_to t( "menu.destroy" ), room_message_path( @room, message ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %><% end %></td>
-  </tr>
-<% } %>
-</table>
+<%# メッセージリスト %>
+<div id="messages_target_room_<%= @room.id %>">
+  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
+</div>
 
 <br />
 
