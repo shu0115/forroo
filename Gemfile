@@ -69,5 +69,5 @@ gem 'sextant', :group => :development
 
 # Utility
 gem 'kaminari'
-#gem 'action_args'
+gem 'action_args'
 

@@ -1,0 +1,15 @@
+
+<p>
+  <b>User:</b><%= @room.user_id %>
+</p>
+
+<p>
+  <b>Title:</b><%= @room.title %>
+</p>
+
+<p>
+  <b>Permission:</b><%= @room.permission %>
+</p>
+
+<%= link_to t( "menu.edit" ), edit_room_path( @room ) %>
+ | <%= link_to t( "menu.list" ), rooms_path %>

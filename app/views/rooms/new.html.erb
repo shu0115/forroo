@@ -1,0 +1,32 @@
+
+<h1>New room</h1>
+
+<%= form_for( :room, url: rooms_path ) do |f| %>
+  <% if @room.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
+
+      <ul>
+      <% @room.errors.full_messages.each{ |msg| %>
+        <li><%= msg %></li>
+      <% } %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :permission %><br />
+    <%= f.select :permission, Settings.room_permissions %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit t( "menu.create" ), data: { 'disable-with' => t( "menu.create" ) } %>
+  </div>
+<% end %>
+
+<%= link_to t( "menu.list" ), rooms_path %>

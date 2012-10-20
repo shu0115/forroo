@@ -1,0 +1,33 @@
+
+<h1>Listing rooms</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Title</th>
+    <th>Permission</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @rooms.each{ |room| %>
+  <tr>
+    <td><%= room.user_id %></td>
+    <td><%= room.title %></td>
+    <td><%= room.permission %></td>
+    <td><%= link_to t( "menu.show" ), room_path( room ) %></td>
+    <td><%= link_to t( "menu.edit" ), edit_room_path( room ) %></td>
+    <td><%= link_to t( "menu.destroy" ), room_path( room ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %></td>
+  </tr>
+<% } %>
+</table>
+
+<br />
+
+<%= link_to t( "menu.new" ), new_room_path %>
+
+<br />
+<br />
+
+<%= link_to t( "menu.top" ), :root %>
