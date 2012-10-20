@@ -4,7 +4,8 @@ class RoomsController < ApplicationController
   # index #
   #-------#
   def index
-    @rooms = Room.where( user_id: session[:user_id] ).all
+#    @rooms = Room.where( user_id: session[:user_id] ).all
+    @rooms = Room.all
   end
 
   #------#
