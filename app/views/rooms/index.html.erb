@@ -1,6 +1,7 @@
 
-<h1>Listing rooms</h1>
+<h3><%= params[:room_type] %> rooms</h3>
 
+<% if @rooms.present? %>
 <table>
   <tr>
     <th>User</th>
@@ -9,25 +10,26 @@
     <th></th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @rooms.each{ |room| %>
   <tr>
-    <td><%= room.user_id %></td>
-    <td><%= room.title %></td>
+    <td><%= render partial: '/layouts/user_icon', locals: { user: room.user } %></td>
+    <td><%= link_to room.title, room_messages_path( room ) %></td>
     <td><%= room.permission %></td>
-    <td><%= link_to "チャット", room_messages_path( room ) %></td>
+    <% if room.user_id == current_user.try(:id) %>
     <td><%= link_to t( "menu.show" ), room_path( room ) %></td>
     <td><%= link_to t( "menu.edit" ), edit_room_path( room ) %></td>
     <td><%= link_to t( "menu.destroy" ), room_path( room ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %></td>
+    <% end %>
   </tr>
 <% } %>
 </table>
+<% end %>
 
 <br />
 
-<%= link_to t( "menu.new" ), new_room_path %>
+<%= link_to "New Room", new_room_path %>
 
 <br />
 <br />

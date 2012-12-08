@@ -1,3 +1,4 @@
+<%# Pusher %>
 <script type="text/javascript">
   var pusher = new Pusher('<%= Pusher.key %>'); // uses your API KEY
   var channel = pusher.subscribe('channel_room_<%= @room.id %>');
@@ -19,9 +20,7 @@
   } );
 </script>
 
-<h1>Messages</h1>
-
-Room : <%= @room.title %><br />
+<h3><%= @room.title %></h3>
 
 <%# メッセージリスト %>
 <div id="messages_target_room_<%= @room.id %>">

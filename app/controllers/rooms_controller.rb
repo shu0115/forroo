@@ -3,9 +3,25 @@ class RoomsController < ApplicationController
   #-------#
   # index #
   #-------#
-  def index
-#    @rooms = Room.where( user_id: session[:user_id] ).all
-    @rooms = Room.all
+  def index( room_type )
+    puts "[ ---------- params[:controller] ---------- ]" ; params[:controller].tapp ;
+
+    if room_type.present?
+      @rooms = Room.where( user_id: session[:user_id] ).order( "created_at DESC" )
+
+      case room_type
+      when "public"
+        @rooms = @rooms.where( permission: "public" ).all
+      when "member"
+        @rooms = @rooms.where( permission: "member" ).all
+      when "approval"
+        @rooms = @rooms.where( permission: "approval" ).all
+      when "private"
+        @rooms = @rooms.where( permission: "private" ).all
+      end
+    else
+      @rooms = Room.where( permission: "public" ).order( "created_at DESC" ).all
+    end
   end
 
   #------#
@@ -37,7 +53,7 @@ class RoomsController < ApplicationController
     @room.user_id = session[:user_id]
 
     if @room.save
-      redirect_to( rooms_path, notice: "Room was successfully created." )
+      redirect_to( rooms_path( room_type: @room.permission ), notice: "ルームを作成しました。" )
     else
       render action: "new"
     end

@@ -16,7 +16,11 @@
       <%# ログイン済み %>
       <li><%= render partial: '/layouts/user_icon', locals: { user: current_user } %></li>
       <li class="<%= params[:controller] == 'top' ? 'active' : '' %>"><%= link_to( "Top", { controller: "top" } ) %></li>
-      <li class="<%= params[:controller] == 'rooms' or params[:controller] == 'messages' ? 'active' : '' %>"><%= link_to( "Rooms", rooms_path ) %></li>
+      <li class="<%= Room.active_rooms?(params) ? 'active' : '' %>"><%= link_to( "Rooms", rooms_path ) %></li>
+      <li class="<%= Room.active_public?(params) ? 'active' : '' %>"><%= link_to( "Public", rooms_path( room_type: "public" ) ) %></li>
+      <li class="<%= Room.active_member?(params) ? 'active' : '' %>"><%= link_to( "Member", rooms_path( room_type: "member" ) ) %></li>
+      <li class="<%= Room.active_approval?(params) ? 'active' : '' %>"><%= link_to( "Approval", rooms_path( room_type: "approval" ) ) %></li>
+      <li class="<%= Room.active_private?(params) ? 'active' : '' %>"><%= link_to( "Private", rooms_path( room_type: "private" ) ) %></li>
       <li><%= link_to( "Logout", logout_path ) %></li>
     <% else %>
       <%# 未ログイン %>
