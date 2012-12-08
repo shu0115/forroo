@@ -22,6 +22,8 @@
 
 <h3><%= @room.title %></h3>
 
+<p><%= @room.permission %></p>
+
 <%# メッセージリスト %>
 <div id="messages_target_room_<%= @room.id %>">
   <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>

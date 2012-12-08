@@ -5,6 +5,12 @@ class MessagesController < ApplicationController
   #-------#
   def index( room_id )
     @room = Room.where( id: room_id ).first
+
+    if @room.permission != "public" and @room.user_id != session[:user_id]
+      flash[:alert] = "閲覧権限がありません。"
+      redirect_to root_path and return
+    end
+
     @messages = Message.where( room_id: room_id ).all
     @message = Message.new
   end
