@@ -18,4 +18,4 @@ programmer_twitter_id: "shu_0115"
 designer_twitter_id: "DESIGNER_TWITTER_ID"
 
 # Room Permission
-room_permissions: [ "private", "public", "member", "approval" ]
+room_permissions: [ "private", "approval", "member", "public" ]
