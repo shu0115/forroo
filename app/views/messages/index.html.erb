@@ -48,29 +48,23 @@
 </script>
 
 <h3><%= link_to( @room.title, room_messages_path( @room ) ) %></h3>
+<p><%= @room.permission %>：<%= @room.messages_count %></p>
 
-<p><%= @room.permission %></p>
-
-<p><%= @room.messages_count %></p>
-
-<%# メッセージリスト %>
-<div id="messages_target_room_<%= @room.id %>">
-  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
-</div>
-
-<br />
-
+<%# 新規メッセージフォーム %>
 <%= form_for( :message, url: room_messages_path ) do |f| %>
   <div class="field">
     <%= f.text_area :sentence, wrap: "off", class: "span8", rows: 5 %>
   </div>
 
   <div class="actions">
-    <%= f.submit t( "menu.create" ), data: { 'disable-with' => t( "menu.create" ) } %>
+    <%= f.submit "投稿", data: { 'disable-with' => t( "menu.create" ) } %>
   </div>
 <% end %>
 
-<%#= link_to t( "menu.new" ), new_room_path %>
+<%# メッセージ一覧 %>
+<div id="messages_target_room_<%= @room.id %>">
+  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
+</div>
 
 <br />
 <br />
