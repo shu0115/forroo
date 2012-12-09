@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
   #-------#
   def index( room_id )
     @room = Room.where( id: room_id ).first
+    @room.update_attributes( messages_count: Message.where(room_id: @room.id).count )
 
     if @room.permission != "public" and @room.user_id != session[:user_id]
       flash[:alert] = "閲覧権限がありません。"
