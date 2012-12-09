@@ -34,13 +34,15 @@ class MessagesController < ApplicationController
     @message.user_id = session[:user_id]
     @message.room_id = room_id
 
+    user = User.where( id: @message.user_id ).first
+    @room = Room.where( id: room_id ).first
+
     if @message.save
       # Pusherトリガー
-      Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: room_id } )
+      Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: @room.id, icon: user.image, title: @room.title, message: @message.sentence } )
 
       redirect_to( room_messages_path( room_id ) )
     else
-      @room = Room.where( id: room_id ).first
       @messages = Message.where( room_id: room_id ).all
       flash[:alert] = "メッセージの投稿に失敗しました。"
       render action: "index"
@@ -55,7 +57,7 @@ class MessagesController < ApplicationController
     message.present? ? message.destroy : flash[:alert] = "メッセージの削除に失敗しました。"
 
     # Pusherトリガー
-    Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: room_id } )
+    Pusher["channel_room_#{room_id}"].trigger( "message_event_room_#{room_id}", { room_id: room_id, icon: nil, title: nil, message: nil } )
 
     redirect_to( room_messages_path( room_id ) )
   end

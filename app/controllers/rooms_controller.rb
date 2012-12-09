@@ -4,8 +4,6 @@ class RoomsController < ApplicationController
   # index #
   #-------#
   def index( room_type )
-    puts "[ ---------- params[:controller] ---------- ]" ; params[:controller].tapp ;
-
     if room_type.present?
       @rooms = Room.where( user_id: session[:user_id] ).order( "created_at DESC" )
 

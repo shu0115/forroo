@@ -1,9 +1,36 @@
-<%# Pusher %>
 <script type="text/javascript">
+  /* デスクトップ通知 */
+  function showNotification(icon, title, message) {
+    if (message == null) {
+      return;
+    };
+
+    // 許可をチェック
+    if (webkitNotifications.permissionLevel === webkitNotifications.PERMISSION_ALLOWED) {
+      var notification = webkitNotifications.createNotification( icon, title, message );
+      notification.show();
+
+      notification.ondisplay = function(){
+        // 表示されてから指定秒数後に自動で閉じる
+        setTimeout(function(){
+          notification.cancel();
+        }, 8000);
+      };
+    } else {
+      // ユーザに許可を得る
+      webkitNotifications.requestPermission(function() {
+        if (webkitNotifications.permissionLevel === webkitNotifications.PERMISSION_ALLOWED) {
+          showNotification();
+        }
+      });
+    }
+  }
+
+  /* Pusher */
   var pusher = new Pusher('<%= Pusher.key %>'); // uses your API KEY
   var channel = pusher.subscribe('channel_room_<%= @room.id %>');
 
-  channel.bind( 'message_event_room_<%= @room.id %>', function(data){
+  channel.bind( 'message_event_room_<%= @room.id %>', function(result){
     $.get(
       // 送信先
       "/rooms/<%= @room.id %>/messages/list",
@@ -11,13 +38,13 @@
       null,
       // コールバック
       function(data, status) {
-        console.log( "[ status ] : " + status );
         $('#messages_target_room_<%= @room.id %>').html(data);
+        showNotification( result.icon, result.title, result.message );
       },
       // 応答データ形式
       "html"
     );
-  } );
+  });
 </script>
 
 <h3><%= link_to( @room.title, room_messages_path( @room ) ) %></h3>
