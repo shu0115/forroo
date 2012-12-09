@@ -1,127 +1,4 @@
 <script type="text/javascript">
-  /* デスクトップ通知 */
-  Notification = {
-      initialized : false,
-      NOT_ALLOWED: 1,
-      NOT_SUPPORTED: 2,
-
-      // 初期化. 利用前に必ず実行すること
-      init: function() {
-        console.log( "[ init ]");
-        console.log( "[ webkitNotifications ]");
-          if( typeof webkitNotifications === 'undefined' ) {
-              return false;
-          }
-          this.initialized = true;
-          if( typeof webkitNotifications.PERMISSION_ALLOWED === 'undefined' ) {
-              webkitNotifications.PERMISSION_ALLOWED = 0;
-              webkitNotifications.PERMISSION_NOT_ALLOWED = 1;
-              webkitNotifications.PERMISSION_DENIED = 2;
-          }
-          if( typeof webkitNotifications.permissionLevel === 'undefined' ) {
-              webkitNotifications.__defineGetter__('permissionLevel', function() {
-                  return this.checkPermission();
-              });
-              webkitNotifications.__defineSetter__('permissionLevel', function() {
-              });
-          }
-          if( !webkitNotifications.createWebNotification ) {
-              webkitNotifications.createWebNotification = webkitNotifications.createHTMLNotification;
-          }
-          console.log( "[ webkitNotifications.PERMISSION_ALLOWED ] : " + webkitNotifications.PERMISSION_ALLOWED);
-          return true;
-      },
-
-      // 作成したNotificationオブジェクトを返す
-      create: function(title, message, icon) {
-        console.log( "[ create ]");
-                  if( !this.initialized ) {
-                      if( !this.init() ) {
-                          // ブラウザがNotification APIに対応していない.
-                          throw Notification.NOT_SUPPORTED;
-                      }
-                  }
-                  if( webkitNotifications.permissionLevel !== webkitNotifications.PERMISSION_ALLOWED ) {
-                      //許可されていない
-                      throw Notification.NOT_ALLOWED;
-                  } else {
-                      return webkitNotifications.createNotification(icon, title, message);
-                  }
-              },
-
-      // ユーザにダイアログを表示する許可をもらう.
-      // この関数はユーザが発生させたマウスイベント等の中でのみ正しく実行される.
-      ask: function(f) {
-        console.log( "[ ask ]");
-               console.log("デスクトップ通知の許可をユーザに求めます。");
-               webkitNotifications.requestPermission(f||function(){});
-           },
-
-      // Method show Notification.
-      show: function(title, message, timeout) {
-        console.log( "[ show ]");
-        console.log( "[ title ] : " + title );
-        console.log( "[ message ] : " + message );
-        console.log( "[ timeout ] : " + timeout );
-          timeout = timeout || 3000;    // default timeout is 3sec(=3,000msec)
-          try {
-              var notification = Notification.create(title, message, "");
-              notification.ondisplay = function() {
-                  setTimeout(function(){
-                      notification.cancel();
-                      console.log("Notification close because timeout");
-                  }, timeout);
-              };
-              notification.show();
-              console.log("Notification showing");
-          } catch(e) {
-              switch(e) {
-                  case Notification.NOT_ALLOWED:
-                      Notification.ask();
-                      break;
-              }
-          }
-      }
-  };
-
-  Notification.init();
-  // var notification = Notification.create();
-  // console.log( "[ notification ] : " + notification );
-  console.log( "[ webkitNotifications.permissionLevel ] : " + webkitNotifications.permissionLevel);
-//  Notification.ask();
-  Notification.show("タイトル", "メッセージ", 10000);
-
-  function showNotification(icon, title, message) {
-    if (message == null) {
-      return;
-    };
-
-    console.log( "[ webkitNotifications.permissionLevel ] : " + webkitNotifications.permissionLevel );
-    console.log( "[ webkitNotifications.PERMISSION_ALLOWED ] : " + webkitNotifications.PERMISSION_ALLOWED );
-
-    // 許可をチェック
-    if (webkitNotifications.permissionLevel === webkitNotifications.PERMISSION_ALLOWED) {
-//      var notification = webkitNotifications.createNotification( icon, title, message );
-//      var notification = webkitNotifications.createNotification( "/assets/rails.png", title, message );
-      var notification = webkitNotifications.createNotification( "", title, message );
-      notification.show();
-
-      notification.ondisplay = function(){
-        // 表示されてから指定秒数後に自動で閉じる
-        setTimeout(function(){
-          notification.cancel();
-        }, 8000);
-      };
-    } else {
-      // ユーザに許可を得る
-      webkitNotifications.requestPermission(function() {
-        if (webkitNotifications.permissionLevel === webkitNotifications.PERMISSION_ALLOWED) {
-          showNotification();
-        }
-      });
-    }
-  }
-
   /* Pusher */
   var pusher = new Pusher('<%= Pusher.key %>'); // uses your API KEY
   var channel = pusher.subscribe('channel_room_<%= @room.id %>');
@@ -135,7 +12,8 @@
       // コールバック
       function(data, status) {
         $('#messages_target_room_<%= @room.id %>').html(data);
-        showNotification( result.icon, result.title, result.message );
+        // デスクトップ通知
+        Notification.show( result.icon, result.title, result.message, 8000 );
       },
       // 応答データ形式
       "html"
@@ -143,10 +21,10 @@
   });
 </script>
 
-<button id="notification" onClick="Notification.ask();">デスクトップ通知</button>
-
 <h3><%= link_to( @room.title, room_messages_path( @room ) ) %></h3>
 <p><%= @room.permission %>：<%= @room.messages_count %></p>
+
+<p><button id="notification" onClick="Notification.ask();">デスクトップ通知</button></p>
 
 <%# 新規メッセージフォーム %>
 <%= form_for( :message, url: room_messages_path ) do |f| %>
