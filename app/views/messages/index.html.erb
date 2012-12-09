@@ -24,6 +24,8 @@
 
 <p><%= @room.permission %></p>
 
+<p><%= @room.messages_count %></p>
+
 <%# メッセージリスト %>
 <div id="messages_target_room_<%= @room.id %>">
   <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>

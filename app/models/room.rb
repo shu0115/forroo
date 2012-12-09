@@ -1,7 +1,8 @@
 class Room < ActiveRecord::Base
-  attr_accessible :permission, :title, :user_id
+  attr_accessible :permission, :title, :user_id, :messages_count
 
   belongs_to :user
+  has_many :messages
 
   private
 
