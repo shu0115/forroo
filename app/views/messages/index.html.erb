@@ -143,6 +143,8 @@
   });
 </script>
 
+<button id="notification" onClick="Notification.ask();">デスクトップ通知</button>
+
 <h3><%= link_to( @room.title, room_messages_path( @room ) ) %></h3>
 <p><%= @room.permission %>：<%= @room.messages_count %></p>
 
