@@ -7,7 +7,8 @@
 
     // 許可をチェック
     if (webkitNotifications.permissionLevel === webkitNotifications.PERMISSION_ALLOWED) {
-      var notification = webkitNotifications.createNotification( icon, title, message );
+//      var notification = webkitNotifications.createNotification( icon, title, message );
+      var notification = webkitNotifications.createNotification( "/assets/rails.png", title, message );
       notification.show();
 
       notification.ondisplay = function(){
