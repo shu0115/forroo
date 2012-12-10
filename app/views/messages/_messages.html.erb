@@ -7,6 +7,7 @@
     <th></th>
   </tr>
 
+<%# メッセージを昇順にソート %>
 <% messages.sort{ |a, b| a.created_at <=> b.created_at }.each.with_index(1){ |message, index| %>
   <tr>
     <td><%= index %></td>
