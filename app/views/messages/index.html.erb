@@ -38,13 +38,12 @@
 
 <%# 新規メッセージフォーム %>
 <%= form_for( :message, url: room_messages_path ) do |f| %>
-  <div class="field">
-    <%= f.text_area :sentence, wrap: "off", class: "span8", rows: 5 %>
-  </div>
+  <p><%= f.text_area :sentence, wrap: "off", class: "span8", rows: 5 %></p>
 
-  <div class="actions">
-    <%= f.submit "投稿", data: { 'disable-with' => t( "menu.create" ) } %>
-  </div>
+  <p><%= button_tag "プレビュー", type: "button", onclick: "message_preview()" %></p>
+  <p id="message_preview"></p>
+
+  <p><%= f.submit "投稿", data: { 'disable-with' => "投稿" } %></p>
 <% end %>
 
 <br />

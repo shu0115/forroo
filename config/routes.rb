@@ -6,6 +6,8 @@ Forroo::Application.routes.draw do
     end
   end
 
+  post "/messages/preview" => "messages#preview"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

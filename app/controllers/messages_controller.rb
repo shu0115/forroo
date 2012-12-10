@@ -34,6 +34,13 @@ class MessagesController < ApplicationController
     @messages = Message.where( room_id: room_id ).order( "created_at DESC" ).all
   end
 
+  #---------#
+  # preview #
+  #---------#
+  def preview( sentence )
+    render partial: 'preview', locals: { sentence: sentence }
+  end
+
   #--------#
   # create #
   #--------#
