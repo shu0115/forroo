@@ -2,6 +2,7 @@ Forroo::Application.routes.draw do
   resources :rooms do
     resources :messages, only: [ :index, :create, :destroy ] do
       get 'list', :on => :collection
+      get 'all', :on => :collection
     end
   end
 

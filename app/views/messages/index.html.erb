@@ -24,7 +24,14 @@
 <h3><%= link_to( @room.title, room_messages_path( @room ) ) %></h3>
 <p><%= @room.permission %>：<%= @room.messages_count %></p>
 
-<p><button id="notification" onClick="Notification.ask();">デスクトップ通知</button></p>
+<p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ), target: "_blank" ) %></p>
+
+<%# メッセージ一覧 %>
+<p id="messages_target_room_<%= @room.id %>">
+  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
+</p>
+
+<p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ), target: "_blank" ) %></p>
 
 <%# 新規メッセージフォーム %>
 <%= form_for( :message, url: room_messages_path ) do |f| %>
@@ -36,11 +43,6 @@
     <%= f.submit "投稿", data: { 'disable-with' => t( "menu.create" ) } %>
   </div>
 <% end %>
-
-<%# メッセージ一覧 %>
-<div id="messages_target_room_<%= @room.id %>">
-  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
-</div>
 
 <br />
 <br />

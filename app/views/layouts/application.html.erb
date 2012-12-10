@@ -21,6 +21,7 @@
       <li class="<%= Room.active_approval?(params) ? 'active' : '' %>"><%= link_to( "Approval", rooms_path( room_type: "approval" ) ) %></li>
       <li class="<%= Room.active_private?(params) ? 'active' : '' %>"><%= link_to( "Private", rooms_path( room_type: "private" ) ) %></li>
       <li><%= link_to( "Logout", logout_path ) %></li>
+      <li><button id="notification" onClick="Notification.ask();">デスクトップ通知</button></li>
     <% else %>
       <%# 未ログイン %>
       <li><%= link_to "Login", "/auth/#{Settings.provider}" %></li>

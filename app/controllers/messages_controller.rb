@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
       redirect_to root_path and return
     end
 
-    @messages = Message.where( room_id: room_id ).order( "created_at DESC" ).all
+    @messages = Message.where( room_id: room_id ).order( "created_at DESC" ).limit(10).all
     @message = Message.new
   end
 
@@ -21,9 +21,17 @@ class MessagesController < ApplicationController
   #------#
   def list( room_id )
     room     = Room.where( id: room_id ).first
-    messages = Message.where( room_id: room_id ).order( "created_at DESC" ).all
+    messages = Message.where( room_id: room_id ).order( "created_at DESC" ).limit(10).all
 
     render partial: 'messages', locals: { room: room, messages: messages }
+  end
+
+  #-----#
+  # all #
+  #-----#
+  def all( room_id )
+    @room     = Room.where( id: room_id ).first
+    @messages = Message.where( room_id: room_id ).order( "created_at ASC" ).all
   end
 
   #--------#
