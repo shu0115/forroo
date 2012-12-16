@@ -30,11 +30,15 @@
 <p><%= render partial: '/messages/user_icons', locals: { users: Message.uniq_users(@messages) } %></p>
 
 <%# メッセージ一覧 %>
-<p id="messages_target_room_<%= @room.id %>">
-  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
-</p>
+<div id="messages_target_room_<%= @room.id %>">
+  <%= render partial: '/messages/messages', locals: { room: @room, messages: @messages } %>
+</div>
+
+<br />
 
 <p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ), target: "_blank" ) %></p>
+
+<br />
 
 <%# 新規メッセージフォーム %>
 <%= form_for( :message, url: room_messages_path ) do |f| %>
