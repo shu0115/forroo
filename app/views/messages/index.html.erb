@@ -8,7 +8,7 @@
       // 送信先
       "/rooms/<%= @room.id %>/messages/list",
       // 送信データ
-      null,
+      { <%= (@user_id.present? ? "user_id: #{@user_id}" : nil) %> },
       // コールバック
       function(data, status) {
         $('#messages_target_room_<%= @room.id %>').html(data);
@@ -21,17 +21,20 @@
   });
 </script>
 
+<%# ルーム名 %>
 <h3><%= link_to( @room.title, room_messages_path( @room ) ) %></h3>
+
+<%# ルーム権限／メッセージ数 %>
 <p><%= @room.permission %>：<%= @room.messages_count %></p>
 
 <p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ), target: "_blank" ) %></p>
 
 <%# 発言者ユーザアイコンリスト %>
-<p><%= render partial: '/messages/user_icons', locals: { users: Message.uniq_users(@messages) } %></p>
+<p><%= render partial: '/messages/user_icons', locals: { users: Message.uniq_users(@messages), room: @room, type: "index" } %></p>
 
 <%# メッセージ一覧 %>
 <div id="messages_target_room_<%= @room.id %>">
-  <%= render partial: '/messages/messages', locals: { room: @room, messages: @messages } %>
+  <%= render partial: '/messages/messages', locals: { room: @room, messages: @messages, user_id: @user_id } %>
 </div>
 
 <br />

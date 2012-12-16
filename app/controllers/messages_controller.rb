@@ -3,8 +3,9 @@ class MessagesController < ApplicationController
   #-------#
   # index #
   #-------#
-  def index( room_id )
-    @room = Room.where( id: room_id ).first
+  def index( room_id, user_id )
+    @user_id = user_id
+    @room    = Room.where( id: room_id ).first
     @room.update_attributes( messages_count: Message.where(room_id: @room.id).count )
 
     if @room.permission != "public" and @room.user_id != session[:user_id]
@@ -13,23 +14,24 @@ class MessagesController < ApplicationController
     end
 
     @messages = Message.includes( :user ).where( room_id: room_id ).order( "created_at DESC" ).limit(10).all
-    @message = Message.new
+    @message  = Message.new
   end
 
   #------#
   # list #
   #------#
-  def list( room_id )
+  def list( room_id, user_id )
     room     = Room.where( id: room_id ).first
     messages = Message.includes( :user ).where( room_id: room_id ).order( "created_at DESC" ).limit(10).all
 
-    render partial: 'messages', locals: { room: room, messages: messages }
+    render partial: 'messages', locals: { room: room, messages: messages, user_id: user_id }
   end
 
   #-----#
   # all #
   #-----#
-  def all( room_id )
+  def all( room_id, user_id )
+    @user_id  = user_id
     @room     = Room.where( id: room_id ).first
     @messages = Message.where( room_id: room_id ).order( "created_at DESC" ).all
   end

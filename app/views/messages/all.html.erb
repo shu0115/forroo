@@ -3,11 +3,11 @@
 <p><%= @room.permission %>：<%= @room.messages_count %></p>
 
 <%# 発言者ユーザアイコンリスト %>
-<p><%= render partial: '/messages/user_icons', locals: { users: Message.uniq_users(@messages) } %></p>
+<p><%= render partial: '/messages/user_icons', locals: { users: Message.uniq_users(@messages), room: @room, type: "all" } %></p>
 
 <%# メッセージ一覧 %>
 <div id="messages_target_room_<%= @room.id %>">
-  <%= render partial: 'messages', locals: { room: @room, messages: @messages } %>
+  <%= render partial: '/messages/messages', locals: { room: @room, messages: @messages, user_id: @user_id } %>
 </div>
 
 <br />

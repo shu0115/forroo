@@ -9,6 +9,7 @@
 
 <%# メッセージを昇順にソート %>
 <% messages.sort{ |a, b| a.created_at <=> b.created_at }.each.with_index(1){ |message, index| %>
+  <% if user_id.blank? or user_id.to_s == message.user_id.to_s %>
   <tr>
     <td><%= index %></td>
     <td><%= render partial: '/layouts/user_icon', locals: { user: message.user } %></td>
@@ -16,5 +17,6 @@
     <td><%= message.created_at.strftime("%Y/%m/%d %H:%M:%S") %></td>
     <td><% if message.user_id == current_user.id %><%= link_to t( "menu.destroy" ), room_message_path( room, message ), method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %><% end %></td>
   </tr>
+  <% end %>
 <% } %>
 </table>

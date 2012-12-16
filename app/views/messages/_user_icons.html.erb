@@ -1,3 +1,7 @@
 <% users.each{ |user| %>
-  <%= render partial: '/layouts/user_icon', locals: { user: user } %>
+  <% if type == "index" %>
+    <%= link_to( image_tag( user.image, size: "18x18", class: "margin_minus2" ), room_messages_path( room, user_id: user.id ), rel: "tooltip", "data-original-title" => user.nickname ) %>
+  <% elsif type == "all" %>
+    <%= link_to( image_tag( user.image, size: "18x18", class: "margin_minus2" ), all_room_messages_path( room, user_id: user.id ), rel: "tooltip", "data-original-title" => user.nickname ) %>
+  <% end %>
 <% } %>
