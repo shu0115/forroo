@@ -27,7 +27,7 @@
 <%# ルーム権限／メッセージ数 %>
 <p><%= @room.permission %>：<%= @room.messages_count %></p>
 
-<p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ), target: "_blank" ) %></p>
+<p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ) ) %></p>
 
 <%# 発言者ユーザアイコンリスト %>
 <p><%= render partial: '/messages/user_icons', locals: { users: Message.uniq_users(@messages), room: @room, type: "index" } %></p>
@@ -39,7 +39,7 @@
 
 <br />
 
-<p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ), target: "_blank" ) %></p>
+<p><%= link_to( "全てのメッセージを見る", all_room_messages_path( @room ) ) %></p>
 
 <br />
 
